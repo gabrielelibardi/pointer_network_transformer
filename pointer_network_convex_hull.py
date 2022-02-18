@@ -405,10 +405,11 @@ class ConvexNet(nn.Module):
 
       # pass through pointer network
       log_pointer_scores = self.pointer(
-        decoder_outputs.permute(1, 0, 2),
-        encoder_outputs.permute(1, 0, 2),
+        decoder_outputs.permute(1, 0, 2), # permutation to put the batch_size first back
+        encoder_outputs.permute(1, 0, 2), # what if both inputs are from the decoder? Makes sense?
         mask_tensor)
       _, masked_argmaxs = masked_max(log_pointer_scores, mask_tensor, dim=-1)
+      print(masked_argmaxs)
       return log_pointer_scores, masked_argmaxs
     else:
       # 
